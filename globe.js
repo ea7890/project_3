@@ -37,11 +37,19 @@ app.init = function () {
 
 app.addCircle = function() {
 	//radius, segments, rings
-	var shape = new THREE.SphereGeometry(50, 16, 16);
+	var shape = new THREE.SphereGeometry(50, 30, 30);
+
+	var texture = THREE.ImageUtils.loadTexture( "images/world.jpg" );
+		texture.wrapS = THREE.RepeatWrapping;
+		texture.wrapT = THREE.RepeatWrapping;
+			texture.repeat.set( 1, 1 );
 
 	var material = new THREE.MeshBasicMaterial({
-		color: 0x1A237E, 
-		wireframe: true
+		color: 0xFFFFFF, 
+		wireframe: false,
+		map: texture
+
+		
 	});
 
 	app.sphere = new THREE.Mesh(shape, material);
