@@ -8,18 +8,24 @@ app.init = function () {
 
 	//camera
 	app.camera = new THREE.PerspectiveCamera(
-		45, window.innerWidth/window.innerHeight, 1, 1000);
-	app.camera.position.z = 200;
+		50, window.innerWidth/window.innerHeight, 1, 1000);
+	app.camera.position.z = 170;
+
 
 	//scene
 	app.scene = new THREE.Scene();
 	app.scene.add(app.camera);
 
+	// app.scene.add(new THREE.AmbientLight(0x333333));
+	// app.light = new THREE.DirectionalLight(0xffffff, 1);
+	// app.light.position.set(5,3,5);
+	// app.scene.add(app.light);
+
 	//renderer
 	app.renderer = new THREE.WebGLRenderer();
 
 	app.renderer.setSize(app.width, app.height);
-	app.renderer.setClearColor( 0xE3F2FD, 1 );
+	// app.renderer.setClearColor( 0x8771b7, 1 );
 
 	console.log(app.renderer); 
 
@@ -31,26 +37,33 @@ app.init = function () {
 
 	
 	app.addCircle();
+	app.addClouds();
 	app.animation();
 }
 
 
 app.addCircle = function() {
 	//radius, segments, rings
-	var shape = new THREE.SphereGeometry(50, 30, 30);
+	var shape = new THREE.SphereGeometry(50, 100, 30);
 
-	var texture = THREE.ImageUtils.loadTexture( "images/world.jpg" );
+	var texture = THREE.ImageUtils.loadTexture( "images/noClouds.jpg" );
 		texture.wrapS = THREE.RepeatWrapping;
 		texture.wrapT = THREE.RepeatWrapping;
 			texture.repeat.set( 1, 1 );
 
 	var material = new THREE.MeshBasicMaterial({
-		color: 0xFFFFFF, 
+		color: 0xffffff, 
 		wireframe: false,
-		map: texture
+		map: texture,
+		bumpMap: THREE.ImageUtils.loadTexture("images/bumpMap.jpg"),
+		bumpScale:   0.005,
+    	specularMap: THREE.ImageUtils.loadTexture('images/water.png'),
+    	specular: new THREE.Color('grey')
 
 		
 	});
+
+
 
 	app.sphere = new THREE.Mesh(shape, material);
 
@@ -59,6 +72,32 @@ app.addCircle = function() {
 	app.renderer.render(app.scene, app.camera);
 
 }
+
+app.addClouds = function(){
+
+	//radius, segments, rings
+	var shape = new THREE.SphereGeometry(0.503, 32, 32);
+
+	var texture = THREE.ImageUtils.loadTexture( "images/fairClouds.png" );
+		texture.wrapS = THREE.RepeatWrapping;
+		texture.wrapT = THREE.RepeatWrapping;
+			texture.repeat.set( 1, 1 );
+
+	var material = new THREE.MeshPhongMaterial({
+		map: texture,
+    	transparent: true    
+	});
+
+
+	app.clouds = new THREE.Mesh(shape, material);
+
+	app.scene.add(app.clouds);
+
+	app.renderer.render(app.scene, app.camera);
+
+}
+
+
 
 app.animation = function () {
 	requestAnimationFrame( app.animation )
