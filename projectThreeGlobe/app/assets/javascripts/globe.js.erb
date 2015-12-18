@@ -44,8 +44,7 @@ app.init = function () {
 
 
 app.addGlobe = function() {
-	//radius, segments, rings
-	// var shape = new THREE.SphereGeometry(50, 100, 30);
+	//radius, width-horizontal segments height-vertical segments
 	var shape = new THREE.SphereGeometry(0.5, 32, 32);
 
 	var texture = THREE.ImageUtils.loadTexture('<%= asset_path("noClouds.jpg") %>');
